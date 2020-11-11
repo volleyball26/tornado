@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.misc.xml
+.modules.xml
+.tornado.iml
+.vcs.xml
