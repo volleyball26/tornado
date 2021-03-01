@@ -35,6 +35,8 @@ class WebApplication(tornado.web.Application):
             login_url="/user/login",
             # cookie_secret=COOKIE_SECRET,
         )
+        # 业务日志
+        self.bussiness_log = logging
         super(WebApplication, self).__init__(HANDLERS, **settings)
 
 class LogFormatter(tornado.log.LogFormatter):
