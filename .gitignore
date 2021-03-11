@@ -102,5 +102,4 @@ ENV/
 # Rope project settings
 .ropeproject
 
-/database/mysql.py
-/database/postgresql.py.py
+defines/config.py
