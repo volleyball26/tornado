@@ -1,3 +1,5 @@
+Momoko==2.2.5.1
+psycopg2==2.7.7
 pycurl==7.43.0.6
 tornado==5.1.1
 Tornado-MySQL==0.5.1
