@@ -9,9 +9,7 @@ from tornado_mysql import pools
 
 
 class Mysql:
-    def __init__(self, ioloop=None):
-        if ioloop is None:
-            ioloop = IOLoop.current()
+    def __init__(self):
         self._pool = pools.Pool(dict(host=DB_HOST, port=DB_PORT,
                                      user=DB_USER, passwd=DB_PASSWORD,
                                      db=DB_DATABASE),
