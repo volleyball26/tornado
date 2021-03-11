@@ -102,4 +102,4 @@ ENV/
 # Rope project settings
 .ropeproject
 
-defines/config.py
+defines/
