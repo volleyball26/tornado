@@ -1,10 +1,20 @@
 # -*- coding:utf-8 -*-
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
+
+from collections import deque
+import warnings
 import logging
 
+from tornado.ioloop import IOLoop
+from tornado.gen import coroutine, Return
+from tornado.concurrent import Future
+
+from tornado_mysql import connect
+from tornado_mysql.connections import Connection
 from defines.config import *
 from tornado_mysql import pools
 
+log = logging.getLogger("tornado_mysql.pools")
 
 class Mysql:
     def __init__(self):
@@ -17,10 +27,6 @@ class Mysql:
     @property
     def pool(self):
         return self._pool
-
-    # @coroutine
-    # def check_connect(self):
-    #     return self.pool.
 
     def __error_log(self, sqlstr, parm=None, error=None):
         logging.error('[sqlerror]sql is: {0}\nparms is:{1}\nerror is:{2}'.format(sqlstr, parm, error))
@@ -68,3 +74,47 @@ class Mysql:
 
         finally:
             return result
+
+
+class Transaction(object):
+    """Represents transaction in pool"""
+    def __init__(self, pool, conn):
+        self._pool = pool
+        self._conn = conn
+
+    def _ensure_conn(self):
+        if self._conn is None:
+            raise Exception("Transaction is closed already")
+
+    def _close(self):
+        self._pool._put_conn(self._conn)
+        self._pool = self._conn = None
+
+    @coroutine
+    def execute(self, query, args=None):
+        """
+        :return: Future[Cursor]
+        :rtype: Future
+        """
+        self._ensure_conn()
+        cur = self._conn.cursor()
+        yield cur.execute(query, args)
+        raise Return(cur)
+
+    @coroutine
+    def commit(self):
+        self._ensure_conn()
+        yield self._conn.commit()
+        self._close()
+
+    @coroutine
+    def rollback(self):
+        self._ensure_conn()
+        yield self._conn.rollback()
+        self._close()
+
+    def __del__(self):
+        if self._pool is not None:
+            warnings.warn("Transaction has not committed or rollbacked.")
+            log.warn("Transaction has not committed or rollbacked.")
+            self._pool._close_conn(self._conn)
