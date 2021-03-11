@@ -18,9 +18,9 @@ log = logging.getLogger("tornado_mysql.pools")
 
 class Mysql:
     def __init__(self):
-        self._pool = pools.Pool(dict(host=DB_HOST, port=DB_PORT,
-                                     user=DB_USER, passwd=DB_PASSWORD,
-                                     db=DB_DATABASE),
+        self._pool = pools.Pool(dict(host=MYSQL_DB_HOST, port=MYSQL_DB_PORT,
+                                     user=MYSQL_DB_USER, passwd=MYSQL_DB_PASSWORD,
+                                     db=MYSQL_DB_DATABASE),
                                 max_idle_connections=1,
                                 max_recycle_sec=3)
 
