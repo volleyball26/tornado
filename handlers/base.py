@@ -79,3 +79,16 @@ class BaseHandler(RequestHandler, PostgreSQL):
             if param not in enum_list:
                 raise Finish(json_dumps({'code': PARAM_ERROR_CODE, 'msg': '参数错误：{}不在支持的枚举值中'.format(argument)}))
         return param
+
+    def add_origin(self):
+        headers = self.request.headers
+        origin = headers.get('Origin')
+        if origin:
+            self.set_header('Access-Control-Allow-Origin', origin)
+            self.set_header('Access-Control-Allow-Methods', 'POST, GET')
+            self.set_header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+            self.set_header("Access-Control-Allow-Credentials", "true")
+
+    def set_default_headers(self):
+        self.set_header('Server', 'Microsoft-IIS/6/0')
+        self.set_header('X-Powered-By', 'ASP.NET')
