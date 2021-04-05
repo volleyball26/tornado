@@ -8,7 +8,8 @@ class TEST(BaseHandler):
         page = self.get_param("page", 1)
         limit = self.get_param("limit", 10)
         sql = """ select * from users """
-        result = await self.query(sql)
+        # result = await self.query(sql)
+        result = {"name": "jack", "sex": "女"}
         page, limit, offset = self.get_page_limit_offset(page, limit)
         self.response(200, {"page":page, "limit":limit, "offset": offset, "result":result})
         return

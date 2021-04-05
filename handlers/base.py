@@ -4,12 +4,12 @@ import json
 from tornado.web import RequestHandler, Finish
 
 from database.mysql import Mysql
-from database.postgresql import PostgreSQL
+from database.postgresql import PostGreSQLMiXin
 from utils.utils import json_dumps
 from defines.code_msg import SUCCESS_CODE, MISS_PARAMS_ERROR_CODE, PARAM_ERROR_CODE
 
 
-class BaseHandler(RequestHandler, PostgreSQL):
+class BaseHandler(RequestHandler, PostGreSQLMiXin):
 
     @property
     def log(self):

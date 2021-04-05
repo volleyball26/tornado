@@ -15,7 +15,7 @@ from defines.config import DSN
 logger = logging.getLogger('sql')
 
 
-class PostgreSQL(object):
+class PostGreSQLMiXin(object):
     """
     数据库基本操作类
     """
